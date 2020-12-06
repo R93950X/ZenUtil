@@ -3,7 +3,7 @@ ZenUtil.InstallDir = "/"..fs.getDir(shell.getRunningProgram())
 local APIS = fs.list(ZenUtil.InstallDir)
 
 for i = 1,#APIS do
-    if APIS[i] ~= "LoadAPIs" then
+    if APIS[i] ~= "LoadAPIs.lua" then
         os.loadAPI("/"..ZenUtil.InstallDir.."/"..APIS[i])
         
     end
