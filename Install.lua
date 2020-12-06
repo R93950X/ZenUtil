@@ -10,7 +10,7 @@ local Files = {
 toDownload = {}
 term.clear()
 term.setCursorPos(1,1)
-print("ZenUtil 0.02c Installer\n")
+print("ZenUtil 0.02d Installer\n")
 for i, v in pairs(Files) do
     local input = 0
     print("Do you wish to install "..v.."? [Y/N]")
