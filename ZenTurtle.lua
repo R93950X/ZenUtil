@@ -77,5 +77,5 @@ end
 
 function turn180()
     turtle.turnLeft()
-    turtle.turnLeft
+    turtle.turnLeft()
 end
