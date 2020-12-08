@@ -5,6 +5,7 @@ local Files = {
     "ZenPeripheral.lua",
     "ZenPic.lua",
     "ZenText.lua",
+    "ZenTurtle.lua"
 }
 
 toDownload = {}
