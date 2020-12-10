@@ -1,5 +1,5 @@
 if not ZenSilent then
-    print("ZenMath 0.01c By TheZen")
+    print("ZenMath 0.02a By TheZen")
     
 end
 
