@@ -3,6 +3,7 @@ if not ZenSilent then
     
 end
 
+-- Basic Functions
 function root(radicand, root)
     -- Verify & Format Arguments
     if type(radicand) ~= "number" then
@@ -19,6 +20,7 @@ function root(radicand, root)
     
 end
 
+-- Circle Functions
 function areaOfCircle(radius)
     -- Verify & Format Arguments
     if type(radius) ~= "number" then
@@ -45,6 +47,7 @@ function circumferenceOfCircle(radius)
     
 end
 
+-- Statistics
 function sum(...)   
     -- Verify & Format Arguments
     local values = {...}
@@ -142,6 +145,157 @@ function median(...)
     table.sort(values)
     
     return #values % 2 == 0 and (values[#values/2]+values[#values/2+1])/2 or (values[#values/2+0.5])
+    
+end
+
+-- Trigonometry
+function sec(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return 1/math.cos(x)
+    
+end
+
+function csc(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return 1/math.sin(x)
+    
+end
+
+function cot(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return 1/math.tan(x)
+    
+end
+
+function asec(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return math.acos(1/x)
+    
+end
+
+function acsc(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return math.asin(1/x)
+    
+end
+
+function acot(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return math.atan(1/x)
+    
+end
+
+function sech(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return 1/math.cosh(x)
+    
+end
+
+function csch(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return 1/math.sinh(x)
+    
+end
+
+function coth(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return 1/math.tanh(x)
+    
+end
+
+function asinh(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return math.log(x + (x^2 + 1)^0.5)
+    
+end
+
+function acosh(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return math.log(x + (x^2 - 1)^0.5)
+    
+end
+
+function atanh(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return math.log((1+x)/(1-x))/2
+    
+end
+
+function acsch(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return asinh(1/x)
+    
+end
+
+function asech(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return acosh(1/x)
+    
+end
+
+function acoth(x)
+    if type(x) ~= "number" then
+        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        
+    end
+    
+    return atanh(1/x)
     
 end
 
