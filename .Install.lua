@@ -2,7 +2,6 @@ local Files = {
     "LoadAPIs.lua",
     "ZenFormat.lua",
     "ZenMath.lua",
-    "ZenPeripheral.lua",
     "ZenPic.lua",
     "ZenText.lua",
 }
