@@ -3,6 +3,18 @@ if not ZenSilent then
     
 end
 
+local function argumentCheck(...)
+    local Args = {...}
+    for i = 2, #Args, 2 do
+        if type(Args[i-1]) ~= Args[i] then
+            error("Argument "..(i/2).." - expected type: "..Args[i+1]..", got "..type(Args[i]), 2)
+
+        end
+
+    end
+
+end
+
 function draw(image,x,y)
     -- Verify & Format Arguments
     if type(image) ~= "string" and type(image) ~= "table" then
@@ -30,8 +42,8 @@ function draw(image,x,y)
     end
     
     -- Function
-    ox, oy = term.getCursorPos()
-    ocolor = term.getBackgroundColor()
+    local ox, oy = term.getCursorPos()
+    local ocolor = term.getBackgroundColor()
     paintutils.drawImage(image, x, y)
     term.setCursorPos(ox, oy)
     term.setBackgroundColor(ocolor)
@@ -55,13 +67,13 @@ function centerImage(image)
     
     
     -- Function
-    l, w = term.getSize()
-    imgW = 0
+    local l, w = term.getSize()
+    local imgW = 0
     for i, v in pairs(image) do
         imgW = math.max(imgW, #v)
     end
-    x = math.ceil((l-imgW)/2)+1
-    y = math.ceil((w-#image)/2)+1
+    local x = math.ceil((l-imgW)/2)+1
+    local y = math.ceil((w-#image)/2)+1
     draw(image,x,y)
     
 end

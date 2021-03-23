@@ -1,302 +1,299 @@
 if not ZenSilent then
-    print("ZenMath 0.02a By TheZen")
+    print("ZenMath 0.03 By TheZen")
     
+end 
+
+local function argumentCheck(...)
+    local Args = {...}
+    for i = 2, #Args, 2 do
+        if type(Args[i-1]) ~= Args[i] then
+            error("Argument "..(i/2).." - expected type: "..Args[i+1]..", got "..type(Args[i]), 2)
+
+        end
+
+    end
+
 end
 
--- Basic Functions
-function root(radicand, root)
-    -- Verify & Format Arguments
-    if type(radicand) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radicand), 2)
+do -- Basic Functions
+    function root(radicand, root)
+        -- Verify & Format Arguments
+        argumentCheck(radicand, "number", root, "number")
         
-    elseif type(root) ~= "number" then
-        error("Argument 2 - expected type: number, got "..type(root), 2)
+        -- Function
+        return radicand ^ (1 / root)
         
     end
-    
-    -- Function
-    
-    return radicand ^ (1 / root)
-    
+
+    function log(value, base)
+        -- Verify & Format Arguments
+        argumentCheck(value, "number", base, "number")
+
+        --Function
+        return math.log(value)/math.log(base)
+
+    end
+
 end
 
--- Circle Functions
-function areaOfCircle(radius)
-    -- Verify & Format Arguments
-    if type(radius) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+do -- Circle Functions
+    function areaOfCircle(radius)
+        -- Verify & Format Arguments
+        argumentCheck(radius, "number")
+        
+        -- Function
+        return math.pi * radius * radius
         
     end
-    
-    -- Function
-    
-    return math.pi * radius ^ 2
-    
-end
 
-function circumferenceOfCircle(radius)
-    -- Verify & Format Arguments
-    if type(radius) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function circumferenceOfCircle(radius)
+        -- Verify & Format Arguments
+        argumentCheck(radius, "number")
+        
+        -- Function
+        return math.pi * radius * 2
         
     end
-    
-    -- Function
-    
-    return math.pi * radius * 2
-    
+
 end
 
--- Statistics
-function sum(...)   
-    -- Verify & Format Arguments
-    local values = {...}
-    values = type(values[1]) == "table" and values[1] or values
-    
-    for i, v in pairs(values) do
-        if type(v) ~= "number" then
-            error("Argument "..i.." - expected type: number, got "..type(v), 2)
+do -- Statistics 
+    function sum(...)   
+        -- Verify & Format Arguments
+        local values = {...}
+        values = type(values[1]) == "table" and values[1] or values
+        
+        for i, v in pairs(values) do
+            if type(v) ~= "number" then
+                error("Argument "..i.." - expected type: number, got "..type(v), 2)
+                
+            end
             
         end
         
+        -- Function
+        local sum = 0
+        for i, v in pairs(values) do
+            sum = sum+v
+        end
+        
+        return sum
+        
     end
-    
-    -- Function
-    local sum = 0
-    for i, v in pairs(values) do
-        sum = sum+v
-    end
-    
-    return sum
-    
-end
 
-function mean(...)
-    -- Verify & Format Arguments
-    local values = {...}
-    values = type(values[1]) == "table" and values[1] or values
-    
-    for i, v in pairs(values) do
-        if type(v) ~= "number" then
-            error("Argument "..i.." - expected type: number, got "..type(v), 2)
+    function mean(...)
+        -- Verify & Format Arguments
+        local values = {...}
+        values = type(values[1]) == "table" and values[1] or values
+        
+        for i, v in pairs(values) do
+            if type(v) ~= "number" then
+                error("Argument "..i.." - expected type: number, got "..type(v), 2)
+                
+            end
             
         end
         
+        -- Function
+        local sum = sum(values)
+        
+        return sum/#values
+        
     end
-    
-    -- Function
-    local sum = sum(values)
-    
-    return sum/#values
-    
-end
 
-function mode(...)
-    -- Verify & Format Arguments
-    local values = {...}
-    values = type(values[1]) == "table" and values[1] or values
-    
-    for i, v in pairs(values) do
-        if type(v) ~= "number" then
-            error("Argument "..i.." - expected type: number, got "..type(v), 2)
+    function mode(...)
+        -- Verify & Format Arguments
+        local values = {...}
+        values = type(values[1]) == "table" and values[1] or values
+        
+        for i, v in pairs(values) do
+            if type(v) ~= "number" then
+                error("Argument "..i.." - expected type: number, got "..type(v), 2)
+                
+            end
             
         end
         
-    end
-    
-    -- Function
-    local Counts = {}
-    for i, v in pairs(values) do
-        Counts[v] = Counts[v] and Counts[v] + 1 or 1
-        
-    end
-    local greatestCount = 0
-    for i, v in pairs(Counts) do
-        greatestCount = v > greatestCount and v or greatestCount
-        
-    end
-    local mode = {}
-    for i, v in pairs(Counts) do
-        if v == greatestCount then
-            table.insert(mode, i)
+        -- Function
+        local Counts = {}
+        for i, v in pairs(values) do
+            Counts[v] = Counts[v] and Counts[v] + 1 or 1
+            
+        end
+        local greatestCount = 0
+        for i, v in pairs(Counts) do
+            greatestCount = v > greatestCount and v or greatestCount
+            
+        end
+        local mode = {}
+        for i, v in pairs(Counts) do
+            if v == greatestCount then
+                table.insert(mode, i)
+                
+            end
             
         end
         
+        return mode
+        
     end
-    
-    return mode
-    
-end
 
-function median(...)
-    -- Verify & Format Arguments
-    local values = {...}
-    values = type(values[1]) == "table" and values[1] or values
-    
-    for i, v in pairs(values) do
-        if type(v) ~= "number" then
-            error("Argument "..i.." - expected type: number, got "..type(v), 2)
+    function median(...)
+        -- Verify & Format Arguments
+        local values = {...}
+        values = type(values[1]) == "table" and values[1] or values
+        
+        for i, v in pairs(values) do
+            if type(v) ~= "number" then
+                error("Argument "..i.." - expected type: number, got "..type(v), 2)
+                
+            end
             
         end
         
-    end
-    
-    -- Function
-    table.sort(values)
-    
-    return #values % 2 == 0 and (values[#values/2]+values[#values/2+1])/2 or (values[#values/2+0.5])
-    
-end
-
--- Trigonometry
-function sec(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        -- Function
+        table.sort(values)
+        
+        return #values % 2 == 0 and (values[#values/2]+values[#values/2+1])/2 or (values[#values/2+0.5])
         
     end
-    
-    return 1/math.cos(x)
-    
 end
 
-function csc(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
-        
-    end
-    
-    return 1/math.sin(x)
-    
-end
+do -- Trigonometry
+    function sec(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
 
-function cot(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+        --Function
+        return 1/math.cos(x)
         
     end
-    
-    return 1/math.tan(x)
-    
-end
 
-function asec(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function csc(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return 1/math.sin(x)
         
     end
-    
-    return math.acos(1/x)
-    
-end
 
-function acsc(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function cot(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return 1/math.tan(x)
         
     end
-    
-    return math.asin(1/x)
-    
-end
 
-function acot(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function asec(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return math.acos(1/x)
         
     end
-    
-    return math.atan(1/x)
-    
-end
 
-function sech(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function acsc(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return math.asin(1/x)
         
     end
-    
-    return 1/math.cosh(x)
-    
-end
 
-function csch(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function acot(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return math.atan(1/x)
         
     end
-    
-    return 1/math.sinh(x)
-    
-end
 
-function coth(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function sech(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return 1/math.cosh(x)
         
     end
-    
-    return 1/math.tanh(x)
-    
-end
 
-function asinh(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function csch(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return 1/math.sinh(x)
         
     end
-    
-    return math.log(x + (x^2 + 1)^0.5)
-    
-end
 
-function acosh(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function coth(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return 1/math.tanh(x)
         
     end
-    
-    return math.log(x + (x^2 - 1)^0.5)
-    
-end
 
-function atanh(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function asinh(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return math.log(x + (x^2 + 1)^0.5)
         
     end
-    
-    return math.log((1+x)/(1-x))/2
-    
-end
 
-function acsch(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function acosh(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return math.log(x + (x^2 - 1)^0.5)
         
     end
-    
-    return asinh(1/x)
-    
-end
 
-function asech(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function atanh(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return math.log((1+x)/(1-x))/2
         
     end
-    
-    return acosh(1/x)
-    
-end
 
-function acoth(x)
-    if type(x) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(radius), 2)
+    function acsch(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return asinh(1/x)
         
     end
-    
-    return atanh(1/x)
-    
+
+    function asech(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return acosh(1/x)
+        
+    end
+
+    function acoth(x)
+        -- Verify & Format Arguments
+        argumentCheck(x, "number")
+        
+        --Function
+        return atanh(1/x)
+        
+    end
 end
 
 --[[

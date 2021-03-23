@@ -1,21 +1,27 @@
 if not ZenSilent then
-    print("ZenFormat 0.01d By TheZen")
+    print("ZenFormat 0.02 By TheZen")
     
+end
+
+local function argumentCheck(...)
+    local Args = {...}
+    for i = 2, #Args, 2 do
+        if type(Args[i-1]) ~= Args[i] then
+            error("Argument "..(i/2).." - expected type: "..Args[i+1]..", got "..type(Args[i]), 2)
+
+        end
+
+    end
+
 end
 
 local digitsDefault = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"}
 
 function decimalToBase(decimalNumber, base, digits)
     -- Verify & Format Arguments
-    if type(decimalNumber) ~= "number" then
-        error("Argument 1 - expected type: number, got "..type(decimalNumber), 2)
-        
-    elseif type(base) ~= "number" then
-        error("Argument 2 - expected type: number, got "..type(base), 2)
-        
-    end
-    
-    digits = digits or {table.unpack(digitsDefault)}
+    argumentCheck(decimalNumber, "number", base, "number")
+
+    digits = type(digits) == "table" and digits or {table.unpack(digitsDefault)}
     
     -- Function
     local newDigitCount = math.floor(math.log(decimalNumber) / math.log(base))
@@ -32,13 +38,7 @@ end
 
 function baseToDecimal(baseNumber, base, digits)
     -- Verify & Format Arguments
-    if type(baseNumber) ~= "string" then
-        error("Argument 1 - expected type: string, got "..type(baseNumber), 2)
-        
-    elseif type(base) ~= "number" then
-        error("Argument 2 - expected type: number, got "..type(base), 2)
-        
-    end
+    argumentCheck(baseNumber, "string", base, "number")
     
     digits = digits or {table.unpack(digitsDefault)}
     for i, v in pairs(digits) do
@@ -59,13 +59,7 @@ end
 
 function splitString(inputString, partScale)
     -- Verify & Format Arguments
-    if type(inputString) ~= "string" then
-        error("Argument 1 - expected type: string, got "..type(inputString), 2)
-        
-    elseif type(partScale) ~= "number" then
-        error("Argument 2 - expected type: number, got "..type(partScale), 2)
-        
-    end
+    argumentCheck(inputString, "string", partScale, "number")
     
     -- Function
     local outputTable = {}

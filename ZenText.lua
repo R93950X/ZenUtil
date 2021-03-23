@@ -3,8 +3,21 @@ if not ZenSilent then
     
 end
 
+local function argumentCheck(...)
+    local Args = {...}
+    for i = 2, #Args, 2 do
+        if type(Args[i-1]) ~= Args[i] then
+            error("Argument "..(i/2).." - expected type: "..Args[i+1]..", got "..type(Args[i]), 2)
+
+        end
+
+    end
+
+end
+
 function writeAt(text,x,y)
     -- Verify & Format Arguments
+    argumentCheck(text, "string", x, "number", y, "number")
     if type(text) ~= "string" then
         error("Argument 1 - expected type: string, got "..type(text), 2)
         
@@ -17,7 +30,7 @@ function writeAt(text,x,y)
     end
     
     --Function
-    ox, oy = term.getCursorPos()
+    local ox, oy = term.getCursorPos()
     for i = 0, select(2, text:gsub("\n","")) do
         local splitPoint = text:find("\n") or string.len(text)
         local line = text:sub(1,splitPoint-1)
@@ -30,10 +43,7 @@ function writeAt(text,x,y)
 end
 
 function printPlus(text)
-    if type(text) ~= "string" then
-        error("Argument 1 - expected type: string, got "..type(text), 2)
-        
-    end
+    argumentCheck(text, "string")
     
     local termColor = term.getTextColor()
     repeat

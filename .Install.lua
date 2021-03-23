@@ -4,10 +4,10 @@ local Files = {
     "ZenMath.lua",
     "ZenPeripheral.lua",
     "ZenPic.lua",
-    "ZenText.lua"
+    "ZenText.lua",
 }
 
-toDownload = {}
+local toDownload = {}
 term.clear()
 term.setCursorPos(1,1)
 print("ZenUtil 0.02d Installer\n")
@@ -28,7 +28,7 @@ end
 for i, v in pairs(toDownload) do
     write("Connecting to https://raw.githubusercontent.com/R93950X/ZenUtil/main/"..v.."... ")
     local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/main/"..v)
-    print("Success.")
+    print("Success!")
     local file = fs.open("/ZenUtil/"..v,"w")
     file.write(website.readAll())
     website.close()
