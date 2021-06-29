@@ -1,9 +1,10 @@
 local Files = {
-    "LoadAPIs.lua",
+    ".LoadAPIs.lua",
     "ZenFormat.lua",
     "ZenMath.lua",
     "ZenPic.lua",
     "ZenText.lua",
+    "ZenTable.lua"
 }
 
 local toDownload = {}
@@ -35,3 +36,9 @@ for i, v in pairs(toDownload) do
     print("Downloaded as /ZenUtil/"..v)
     
 end
+
+--[[
+Todo:
+    - Actually check if connection was sucessful
+    - Somehow unify the argument check function in a modular utility pack
+]]

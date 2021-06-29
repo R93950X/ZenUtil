@@ -23,3 +23,14 @@ function ZenUtil.update()
         
     end
 end
+
+function ZenUtil.modify()
+    local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/main/Install.lua")
+    loadstring(website.readAll())()
+end
+
+--[[
+Todo:
+    - Actually check if connection was sucessful
+    - Make modify function prettier
+]]
