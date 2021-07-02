@@ -39,6 +39,6 @@ end
 
 --[[
 Todo:
-    - Actually check if connection was sucessful
+    - Actually check if connections were sucessful
     - Somehow unify the argument check function in a modular utility pack
 ]]
