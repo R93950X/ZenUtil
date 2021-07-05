@@ -11,7 +11,7 @@ local files = {
 }
 
 local branch = string.find(args,"-b") and "beta" or "main"
-local installDir1, installDir2, installDir = args:find("-d [%w/]+"))
+local installDir1, installDir2, installDir = args:find("-d [%w/]+")
 if installDir2 - installDir1 >= 4 then
     installDir = "/"..args:sub(installDir1+3,installDir2)
 else
