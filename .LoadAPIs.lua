@@ -1,37 +1,47 @@
 _G.ZenUtil = {}
-ZenUtil.InstallDir = "/"..fs.getDir(shell.getRunningProgram())
-local APIS = fs.list(ZenUtil.InstallDir)
+if ... == "true" then
+    ZenUtil.silent = true
 
-for i = 1,#APIS do
-    if APIS[i]:sub(1,1) ~= "." then
-        os.loadAPI("/"..ZenUtil.InstallDir.."/"..APIS[i])
+end
+ZenUtil.branch = "_BRANCH_"
+ZenUtil.installDir = "/"..fs.getDir(shell.getRunningProgram())
+ZenUtil.files = fs.list(ZenUtil.installDir)
+
+for i = 1,#ZenUtil.files do
+    if ZenUtil.files[i]:sub(1,1) ~= "." then
+        os.loadAPI("/"..ZenUtil.installDir.."/"..ZenUtil.files[i])
         
     end
     
 end
 
 function ZenUtil.update()
-    for i, v in pairs(APIS) do
-        write("Connecting to https://raw.githubusercontent.com/R93950X/ZenUtil/main/"..v.."... ")
-        local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/main/"..v)
-        print("Success.")
-        local file = fs.open("/ZenUtil/"..v,"w")
-        file.write(website.readAll())
-        website.close()
-        file.close()
-        print("Downloaded as /ZenUtil/"..v)
+    for i, v in pairs(ZenUtil.files) do
+        write("Connecting to https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/"..v.."... ")
+        local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/"..v)
+        if website then
+            fs.delete(ZenUtil.installDir.."/"..v)
+            print("Success!")
+            local file = fs.open(ZenUtil.installDir.."/"..v,"w")
+            -- using "_BRA".."NCH_" to prevent the string itself from being caught in the gsub()
+            file.write(website.readAll():gsub("_BRA".."NCH_",ZenUtil.branch))
+            website.close()
+            file.close()
+            print("Downloaded as "..ZenUtil.installDir.."/"..v)
+            
+        else
+            print("Connection failed!")
+            
+        end
         
     end
-end
-
-function ZenUtil.modify()
-    local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/main/.Install.lua")
-    loadstring(website.readAll())()
+    
 end
 
 --[[
 Todo:
-    - Actually check if connections were sucessful
-    - Make modify function prettier
-    - Make modify function capable of removing APIs
-]]
+    - ZenUtil.update()
+        - Replace with execution of .Install
+
+            - ^ will allow for removal of APIs
+]]  

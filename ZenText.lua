@@ -1,4 +1,4 @@
-if not ZenSilent then
+if not ZenUtil.silent then
     print("ZenText 0.01b By TheZen")
     
 end
