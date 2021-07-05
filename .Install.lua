@@ -15,17 +15,26 @@ local files = {
     "ZenTable.lua"
 }
 
-local branch = string.find(args,"-b") and "beta" or "main"
+local branches = {
+    "main",
+    "beta"
+}
 
-local installDir1, installDir2 = args:find("-d [%w/]+")
-local installDir
-if (installDir2 or 0) - (installDir1 or 0) >= 4 then
-    installDir = "/"..args:sub(installDir1+3,installDir2)
+local function pullArg(arg, filter, default)
+    local arg1, arg2 = args:find(arg.." "..filter)
+    local arg
+    if (arg2 or 0) - (arg1 or 0) >= string.len(arg)+2 then
+        return arg
+        
+    else
+        return default
 
-else
-    installDir = "/ZenUtil"
+    end
 
 end
+
+local branch = pullArg("-b", "%w+", "main")
+local installDir = "/"..pullArg("-d", "[%w+/]", "ZenUtil")
 
 -- Ask user which files they want
 local toDownload = {}
