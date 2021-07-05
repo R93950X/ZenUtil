@@ -1,7 +1,6 @@
 local args = {...}
 for i = 1, #args do
     args[i] = args[i].." "
-    
 end
 args = table.concat(args)
 
@@ -21,10 +20,8 @@ local installDir1, installDir2 = args:find("-d [%w/]+")
 local installDir
 if (installDir2 or 0) - (installDir1 or 0) >= 4 then
     installDir = "/"..args:sub(installDir1+3,installDir2)
-
 else
     installDir = "/ZenUtil"
-
 end
 
 -- Ask user which files they want
@@ -33,10 +30,8 @@ term.clear()
 term.setCursorPos(1,1)
 if branch == "main" then
     print("ZenUtil 0.03 Installer\n")
-
 else
     print("ZenUtil 0.04 "..branch.. " Installer\n@ "..installDir.."\n")
-
 end
 
 for i, v in pairs(files) do

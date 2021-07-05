@@ -23,13 +23,11 @@ function ZenUtil.update()
         print("Downloaded as /"..ZenUtil.installDir.."/"..v)
         
     end
-    
 end
 
 function ZenUtil.modify()
     local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/.Install.lua"..(ZenUtil.branch == "beta" and " -b" or ""))
     loadstring(website.readAll())()
-
 end
 
 --[[
