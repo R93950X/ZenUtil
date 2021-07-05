@@ -1,5 +1,5 @@
 _G.ZenUtil = {}
-ZenUtil.branch = _BRANCH_
+ZenUtil.branch = "_BRANCH_"
 ZenUtil.installDir = "/"..fs.getDir(shell.getRunningProgram())
 local APIS = fs.list(ZenUtil.installDir)
 
@@ -17,7 +17,7 @@ function ZenUtil.update()
         local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/"..v)
         print("Success.")
         local file = fs.open(ZenUtil.installDir.."/"..v,"w")
-        file.write(website.readAll())
+        file.write(website.readAll():gsub("_BRANCH_",ZenUtil.branch))
         website.close()
         file.close()
         print("Downloaded as /"..ZenUtil.installDir.."/"..v)
@@ -37,6 +37,5 @@ Todo:
             - ^ will allow for Beta branch
             - ^ will allow for removal of APIs
     
-    - Test branch functionality
     - Test installDir functionality
 ]]  

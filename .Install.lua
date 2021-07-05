@@ -42,11 +42,7 @@ for i, v in pairs(toDownload) do
     local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..branch.."/"..v)
     print("Success!")
     local file = fs.open("/ZenUtil/"..v,"w")
-    if v == ".LoadAPIs.lua" then
-        file.write(website.readAll():gsub("_BRANCH_",branch))
-    else
-        file.write(website.readAll())
-    end
+    file.write(website.readAll():gsub("_BRANCH_",branch))
     website.close()
     file.close()
     print("Downloaded as /ZenUtil/"..v)
