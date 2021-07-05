@@ -30,28 +30,41 @@ local function interpretArgs(tInput, tArgs)
 							usedEntries[i+1] = true
 							if aType == "number" then
 								output[aName] = tonumber(tInput[i+1])
+                                
 							else
 								output[aName] = tInput[i+1]
+
 							end
+
 						else
 							output[aName] = nil
 							errors[1] = errors[1] and (errors[1] + 1) or 1
 							errors[aName] = "expected " .. aType .. ", got " .. type(tInput[i+1])
+
 						end
+
 					else
 						usedEntries[i] = true
 						output[aName] = true
+
 					end
+
 				end
+
 			end
+
 		end
+
 	end
 	for i = 1, #tInput do
 		if not usedEntries[i] then
 			output[#output+1] = tInput[i]
+
 		end
+
 	end
 	return output, errors
+
 end
 
 local argData = {
@@ -60,7 +73,6 @@ local argData = {
     ["-o"] = false
 }
 
--- Error check also from https://github.com/LDDestroier/CC
 local argList = interpretArgs({...}, argData)
 
 local installDir = "/"..(argList["-d"] or "ZenUtil")
@@ -70,17 +82,21 @@ local overwrite = argList["-o"] or false
 argErrors = {}
 if not branches[branch] then
     table.insert(argErrors, "Invalid branch \""..branch.."\"")
+
 end
 if fs.exists(installDir) and not overwrite then
     table.insert(argErrors, "\""..installDir.."\" already exists")
+
 end
 
 if #argErrors > 0 then
 	local errList = ""
 	for k,v in pairs(argErrors) do
         errList = errList..v.."\n"
+
     end
     error(errList)
+
 end
 
 -- Ask user which files they want
