@@ -16,7 +16,11 @@ branch = string.find(args,"-b") and "beta" or "main"
 local toDownload = {}
 term.clear()
 term.setCursorPos(1,1)
-print("ZenUtil 0.02d Installer\n")
+if branch == "main" then
+    print("ZenUtil 0.03 Installer\n")
+else
+    print("ZenUtil 0.04 "..branch.. " Installer\n")
+end
 
 for i, v in pairs(files) do
     local input = 0
