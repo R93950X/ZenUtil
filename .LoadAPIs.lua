@@ -15,12 +15,19 @@ function ZenUtil.update()
     for i, v in pairs(APIS) do
         write("Connecting to https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/"..v.."... ")
         local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/"..v)
-        print("Success.")
-        local file = fs.open(ZenUtil.installDir.."/"..v,"w")
-        file.write(website.readAll():gsub("_BRANCH_",ZenUtil.branch))
-        website.close()
-        file.close()
-        print("Downloaded as /"..ZenUtil.installDir.."/"..v)
+        if website then
+            fs.delete(ZenUtil.installDir.."/"..v)
+            print("Success!")
+            local file = fs.open(ZenUtil.installDir.."/"..v,"w")
+            file.write(website.readAll():gsub("_BRA".."NCH_",ZenUtil.branch))
+            website.close()
+            file.close()
+            print("Downloaded as "..ZenUtil.installDir.."/"..v)
+            
+        else
+            print("Connection failed!")
+            
+        end
         
     end
     
