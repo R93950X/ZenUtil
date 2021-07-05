@@ -10,7 +10,7 @@ local files = {
     "ZenTable.lua"
 }
 
-branch = string.find(args,"-b") and "beta" else "main"
+branch = string.find(args,"-b") and "beta" or "main"
 
 -- Ask user which files they want
 local toDownload = {}
