@@ -25,6 +25,19 @@ function shuffle(table)
 
 end
 
+function reverse(table)
+    argumentCheck(table, "table")
+    local pos1 = 1
+    local pos2 = #table
+    while pos1 < pos2 do
+        table[pos1], table[pos2] = table[pos2], table[pos1]
+        pos1 = pos1 + 1
+        pos2 = pos2 - 1
+
+    end
+    
+end
+
 --[[
 Todo:
     None!
