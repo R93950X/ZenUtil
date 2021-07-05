@@ -1,4 +1,4 @@
-if not ZenSilent then
+if not ZenUtil.silent then
     print("ZenMath 0.03 By TheZen")
     
 end 

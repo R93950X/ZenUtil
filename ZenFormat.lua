@@ -1,4 +1,4 @@
-if not ZenSilent then
+if not ZenUtil.silent then
     print("ZenFormat 0.02 By TheZen")
     
 end

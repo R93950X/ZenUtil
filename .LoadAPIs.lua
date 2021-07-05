@@ -1,4 +1,8 @@
 _G.ZenUtil = {}
+if ... == "true" then
+    ZenUtil.silent = true
+
+end
 ZenUtil.branch = "_BRANCH_"
 ZenUtil.installDir = "/"..fs.getDir(shell.getRunningProgram())
 ZenUtil.files = fs.list(ZenUtil.installDir)
