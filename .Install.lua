@@ -10,7 +10,13 @@ local files = {
     "ZenTable.lua"
 }
 
-branch = string.find(args,"-b") and "beta" or "main"
+local branch = string.find(args,"-b") and "beta" or "main"
+local installDir1, installDir2, installDir = args:find("-d [%w/]+"))
+if installDir2 - installDir1 >= 4 then
+    installDir = "/"..args:sub(installDir1+3,installDir2)
+else
+    installDir = "/ZenUtil"
+end
 
 -- Ask user which files they want
 local toDownload = {}
@@ -55,8 +61,5 @@ Todo:
     - Somehow unify the argument check function in a modular utility pack
     - Make a UI
     - Create Update functionality
-    - -b argument use a beta branch
     - Add installDir functionality
-
-    - Test -b argument
 ]]

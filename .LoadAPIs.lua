@@ -26,7 +26,7 @@ function ZenUtil.update()
 end
 
 function ZenUtil.modify()
-    local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/main/.Install.lua")
+    local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..ZenUtil.branch.."/.Install.lua"..(ZenUtil.branch == "beta" and " -b" or ""))
     loadstring(website.readAll())()
 end
 
@@ -36,6 +36,4 @@ Todo:
         - Replace with execution of .Install
             - ^ will allow for Beta branch
             - ^ will allow for removal of APIs
-    
-    - Test installDir functionality
 ]]  
