@@ -104,7 +104,7 @@ local toDownload = {}
 term.clear()
 term.setCursorPos(1,1)
 if branch == "main" then
-    print("ZenUtil 0.03 Installer\n@ "..installDir.."\n")
+    print("ZenUtil 0.04 Installer\n@ "..installDir.."\n")
 
 else
     print("ZenUtil 0.04 "..branch.. " Installer\n@ "..installDir.."\n")
