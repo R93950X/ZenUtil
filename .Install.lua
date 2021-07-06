@@ -5,10 +5,7 @@ local branches
 local tab = {
 }
 
-local version = {
-    ["main"] = 0.1,
-    ["beta"] = 0.2
-}
+local version = 0.1
 
 local selectedTab = "Files"
 local selectedBranch = "main"
@@ -166,7 +163,7 @@ end
 function banner()
     term.setBackgroundColor(colors.gray)
     term.setCursorPos(1,h)
-    write("ZenUtil Version "..version[selectedBranch]..(selectedBranch ~= "main" and (" "..selectedBranch) or "").." Installer")
+    write("ZenUtil Version "..(selectedBranch == "main" and version or (" "..selectedBranch) or "").." Installer")
     write(string.rep(" ",w))
     sleep(10^6)
 end
