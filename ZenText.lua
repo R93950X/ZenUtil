@@ -1,5 +1,5 @@
 if not ZenUtil.silent then
-    print("ZenText 0.01b By TheZen")
+    print("ZenText 0.1 By TheZen")
     
 end
 

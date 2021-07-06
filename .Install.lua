@@ -6,8 +6,8 @@ local tab = {
 }
 
 local version = {
-    ["main"] = 0.04,
-    ["beta"] = 0.1
+    ["main"] = 0.1,
+    ["beta"] = 0.2
 }
 
 local selectedTab = "Files"
