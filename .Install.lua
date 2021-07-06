@@ -1,4 +1,6 @@
-local files, selectedFiles, branches
+_G.files = {}
+_G.selectedFiles = {}
+local branches
 
 local tab = {
 }
@@ -14,17 +16,20 @@ local installDir = "/ZenUtil"
 local QUIT = false
 local IINSTALL = false
 local w, h = term.getSize()
+local modifyMode = 2
 
-local function refreshFiles()
+function _G.refreshFiles()
+    _G.S = false
     files = {}
     selectedFiles = {}
     local handle = http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref="..selectedBranch)
     if handle then
-        local data = textutils.unserialiseJSON(handle.readAll())
+        _G.data = textutils.unserialiseJSON(handle.readAll())
         for i, v in pairs(data) do
             if not (v.name:sub(1,1) == "." and v.name ~= ".LoadAPIs.lua") then
+                _G.S = true
                 table.insert(files, v.name)
-                selectedFiles[v.name] = true
+                selectedFiles[v.name] = 1
             end
         end
     else
@@ -54,10 +59,12 @@ function tab.Files()
     term.clear()
     term.setCursorPos(1,2)
     for i, v in pairs(files) do
-        if selectedFiles[v] == true then
-            term.setBackgroundColor(colors.lime)
-        else
+        if selectedFiles[v] == 0 then
             term.setBackgroundColor(colors.red)
+        elseif selectedFiles[v] == 1 then
+            term.setBackgroundColor(colors.green)
+        elseif selectedFiles[v] == 2 then
+            term.setBackgroundColor(colors.yellow)
         end
         write("  "..v)
         write(string.rep(" ",w).."\n")
@@ -66,7 +73,7 @@ function tab.Files()
     repeat
         event, button, x, y = coroutine.yield()
     until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #files
-    selectedFiles[files[y-1]] = not selectedFiles[files[y-1]]
+    selectedFiles[files[y-1]] = (selectedFiles[files[y-1]]+1)%modifyMode
 end
 
 function tab.Branches()
@@ -86,6 +93,7 @@ function tab.Branches()
         event, button, x, y = coroutine.yield()
     until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #branches
     selectedBranch = branches[y-1]
+    sleep(1/20)
     refreshFiles()
 end
 
@@ -160,17 +168,18 @@ function banner()
     term.setCursorPos(1,h)
     write("ZenUtil Version "..version[selectedBranch]..(selectedBranch ~= "main" and (" "..selectedBranch) or "").." Installer")
     write(string.rep(" ",w))
-    coroutine.yield()
+    sleep(10^6)
 end
 
 refreshFiles()
 refreshBranches()
 if ZenUtil then
+    modifyMode = 3
     for i, v in pairs(selectedFiles) do
-        selectedFiles[i] = false
+        selectedFiles[i] = 0
     end
     for i, v in pairs(ZenUtil.files) do
-        selectedFiles[v] = true
+        selectedFiles[v] = 2
     end
     selectedBranch = ZenUtil.branch
     installDir = ZenUtil.installDir
@@ -182,7 +191,7 @@ end
 
 if INSTALL then
     for i, v in pairs(selectedFiles) do
-        if v then
+        if v == 1 then
             write("Connecting to https://raw.githubusercontent.com/R93950X/ZenUtil/"..selectedBranch.."/"..i.."... ")
             local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..selectedBranch.."/"..i)
             if website then 
@@ -197,6 +206,8 @@ if INSTALL then
                 print("Connection failed!")
 
             end
+        elseif fs.exists(installDir.."/"..i) and v == 0 then
+            fs.delete(installDir.."/"..i)
         end
     end
     sleep(0.5)
@@ -206,5 +217,5 @@ end
 
 --[[
 Todo:    
-    - Somehow unify the argument check function in a modular utility pack
+    None!
 ]]

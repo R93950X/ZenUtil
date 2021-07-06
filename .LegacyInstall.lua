@@ -107,7 +107,7 @@ if branch == "main" then
     print("ZenUtil 0.04 Installer\n@ "..installDir.."\n")
 
 else
-    print("ZenUtil 0.04 "..branch.. " Installer\n@ "..installDir.."\n")
+    print("ZenUtil 0.1 "..branch.. " Installer\n@ "..installDir.."\n")
 
 end
 
@@ -151,9 +151,5 @@ end
 
 --[[
 Todo:
-    - Somehow unify the argument check function in a modular utility pack
-    
-    - Completely rewrite installer
-        - Make a UI
-        - Create Update functionality
+    None!
 ]]
