@@ -17,6 +17,7 @@ end
 
 function ZenUtil.update()
     shell.run("wget run https://raw.githubusercontent.com/R93950X/ZenUtil/"..branch.."/Install.lua")
+    
 end
 
 --[[
