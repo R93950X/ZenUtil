@@ -246,7 +246,7 @@ do -- Trigonometry
         argumentCheck(x, "number")
         
         --Function
-        return math.log(x + (x^2 + 1)^0.5)
+        return math.log(x + (x*x + 1)^0.5)
         
     end
 
@@ -255,7 +255,7 @@ do -- Trigonometry
         argumentCheck(x, "number")
         
         --Function
-        return math.log(x + (x^2 - 1)^0.5)
+        return math.log(x + (x*x - 1)^0.5)
         
     end
 
