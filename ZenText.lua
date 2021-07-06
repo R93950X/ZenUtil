@@ -18,16 +18,6 @@ end
 function writeAt(text,x,y)
     -- Verify & Format Arguments
     argumentCheck(text, "string", x, "number", y, "number")
-    if type(text) ~= "string" then
-        error("Argument 1 - expected type: string, got "..type(text), 2)
-        
-    elseif type(x) ~= "number" then
-        error("Argument 2 - expected type: number, got "..type(x), 2)
-        
-    elseif type(y) ~= "number" then
-        error("Argument 3 - expected type: number, got "..type(y), 2)
-        
-    end
     
     --Function
     local ox, oy = term.getCursorPos()
