@@ -15,27 +15,39 @@ local function argumentCheck(...)
 
 end
 
-function shuffle(table)
-    argumentCheck(table, "table")
-    for i = #table, 2, -1 do
+function shuffle(tbl)
+    argumentCheck(tbl, "table")
+    for i = #tbl, 2, -1 do
         local j = math.random(i)
-        table[i], table[j] = table[j], table[i]
+        tbl[i], tbl[j] = tbl[j], tbl[i]
 
     end
 
 end
 
-function reverse(table)
-    argumentCheck(table, "table")
+function reverse(tbl)
+    argumentCheck(tbl, "table")
     local pos1 = 1
-    local pos2 = #table
+    local pos2 = #tbl
     while pos1 < pos2 do
-        table[pos1], table[pos2] = table[pos2], table[pos1]
+        tbl[pos1], tbl[pos2] = tbl[pos2], tbl[pos1]
         pos1 = pos1 + 1
         pos2 = pos2 - 1
 
     end
     
+end
+
+function deepCopy(tbl)
+    local clone = {}
+    for k, v in pairs(tbl) do
+        if type(v) == "table" then
+            clone[k] = deepCopy(v)
+        else
+            clone[k] = v
+        end
+    end
+    return clone
 end
 
 --[[

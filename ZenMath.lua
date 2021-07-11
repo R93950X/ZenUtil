@@ -161,136 +161,91 @@ end
 
 do -- Trigonometry
     function sec(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-
-        --Function
         return 1/math.cos(x)
         
     end
 
     function csc(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return 1/math.sin(x)
         
     end
 
     function cot(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return 1/math.tan(x)
         
     end
 
     function asec(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return math.acos(1/x)
         
     end
 
     function acsc(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return math.asin(1/x)
         
     end
 
     function acot(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return math.atan(1/x)
         
     end
 
     function sech(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return 1/math.cosh(x)
         
     end
 
     function csch(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return 1/math.sinh(x)
         
     end
 
     function coth(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return 1/math.tanh(x)
         
     end
 
     function asinh(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return math.log(x + (x*x + 1)^0.5)
         
     end
 
     function acosh(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return math.log(x + (x*x - 1)^0.5)
         
     end
 
     function atanh(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return math.log((1+x)/(1-x))/2
         
     end
 
     function acsch(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return asinh(1/x)
         
     end
 
     function asech(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return acosh(1/x)
         
     end
 
     function acoth(x)
-        -- Verify & Format Arguments
         argumentCheck(x, "number")
-        
-        --Function
         return atanh(1/x)
         
     end
@@ -298,5 +253,12 @@ end
 
 --[[
 Todo:
-    None!
+    - GCD
+    - LCM
+    - Moar vectors (higher-d)
+    - Matrices
+
+    - Extensions
+        - Complex Numbers
+        - Ratio type (fraction)
 ]]
