@@ -16,54 +16,53 @@ local function argumentCheck(...)
 end
 
 do -- Basic Functions
-    function root(radicand, root)
+    function root(x, n)
         -- Verify & Format Arguments
-        argumentCheck(radicand, "number", root, "number")
+        argumentCheck(x, "number", root, "number")
         
         -- Function
-        return radicand ^ (1 / root)
+        return x ^ (1 / n)
         
     end
 
-    function log(value, base)
+    function log(x, b)
         -- Verify & Format Arguments
-        argumentCheck(value, "number", base, "number")
+        argumentCheck(x, "number", b, "number")
 
         --Function
-        return math.log(value)/math.log(base)
+        return math.log(x)/math.log(b)
 
     end
 
 end
 
 do -- Circle Functions
-    function areaOfCircle(radius)
+    function areaOfCircle(r)
         -- Verify & Format Arguments
-        argumentCheck(radius, "number")
+        argumentCheck(r, "number")
         
         -- Function
-        return math.pi * radius * radius
+        return math.pi * r * r
         
     end
 
-    function circumferenceOfCircle(radius)
+    function circumferenceOfCircle(r)
         -- Verify & Format Arguments
-        argumentCheck(radius, "number")
+        argumentCheck(r, "number")
         
         -- Function
-        return math.pi * radius * 2
+        return math.pi * r * 2
         
     end
 
 end
 
-do -- Statistics 
-    function sum(...)   
-        -- Verify & Format Arguments
-        local values = {...}
-        values = type(values[1]) == "table" and values[1] or values
+do -- Statistics Functions
+    function sum(...)
+        local x = {...}
+        x = type(x[1]) == "table" and x[1] or x
         
-        for i, v in pairs(values) do
+        for i, v in pairs(x) do
             if type(v) ~= "number" then
                 error("Argument "..i.." - expected type: number, got "..type(v), 2)
                 
@@ -71,9 +70,8 @@ do -- Statistics
             
         end
         
-        -- Function
         local sum = 0
-        for i, v in pairs(values) do
+        for i, v in pairs(x) do
             sum = sum+v
         end
         
@@ -82,31 +80,28 @@ do -- Statistics
     end
 
     function mean(...)
-        -- Verify & Format Arguments
-        local values = {...}
-        values = type(values[1]) == "table" and values[1] or values
+        local x = {...}
+        x = type(x[1]) == "table" and x[1] or x
         
-        for i, v in pairs(values) do
+        for i, v in pairs(x) do
             if type(v) ~= "number" then
                 error("Argument "..i.." - expected type: number, got "..type(v), 2)
                 
             end
             
         end
+
+        local sum = sum(x)
         
-        -- Function
-        local sum = sum(values)
-        
-        return sum/#values
+        return sum/#x
         
     end
 
     function mode(...)
-        -- Verify & Format Arguments
-        local values = {...}
-        values = type(values[1]) == "table" and values[1] or values
+        local x = {...}
+        x = type(x[1]) == "table" and x[1] or x
         
-        for i, v in pairs(values) do
+        for i, v in pairs(x) do
             if type(v) ~= "number" then
                 error("Argument "..i.." - expected type: number, got "..type(v), 2)
                 
@@ -114,9 +109,8 @@ do -- Statistics
             
         end
         
-        -- Function
         local Counts = {}
-        for i, v in pairs(values) do
+        for i, v in pairs(x) do
             Counts[v] = Counts[v] and Counts[v] + 1 or 1
             
         end
@@ -139,11 +133,10 @@ do -- Statistics
     end
 
     function median(...)
-        -- Verify & Format Arguments
-        local values = {...}
-        values = type(values[1]) == "table" and values[1] or values
+        local x = {...}
+        x = type(x[1]) == "table" and x[1] or x
         
-        for i, v in pairs(values) do
+        for i, v in pairs(x) do
             if type(v) ~= "number" then
                 error("Argument "..i.." - expected type: number, got "..type(v), 2)
                 
@@ -151,15 +144,14 @@ do -- Statistics
             
         end
         
-        -- Function
-        table.sort(values)
+        table.sort(x)
         
-        return #values % 2 == 0 and (values[#values/2]+values[#values/2+1])/2 or (values[#values/2+0.5])
+        return #x % 2 == 0 and (x[#x/2]+x[#x/2+1])/2 or (x[#x/2+0.5])
         
     end
 end
 
-do -- Trigonometry
+do -- Trigonometry Functions
     function sec(x)
         argumentCheck(x, "number")
         return 1/math.cos(x)
@@ -257,6 +249,7 @@ Todo:
     - LCM
     - Moar vectors (higher-d)
     - Matrices
+    - new RNG
 
     - Extensions
         - Complex Numbers
