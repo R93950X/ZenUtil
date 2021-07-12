@@ -10,21 +10,18 @@ local version = 0.1
 local selectedTab = "Files"
 local selectedBranch = "main"
 local installDir = "/ZenUtil"
-local QUIT = false
-local IINSTALL = false
+local QUIT, INSTALL, files, selectedFiles
 local w, h = term.getSize()
 local modifyMode = 2
 
 function _G.refreshFiles()
-    _G.S = false
     files = {}
     selectedFiles = {}
     local handle = http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref="..selectedBranch)
     if handle then
-        _G.data = textutils.unserialiseJSON(handle.readAll())
+        data = textutils.unserialiseJSON(handle.readAll())
         for i, v in pairs(data) do
             if not (v.name:sub(1,1) == "." and v.name ~= ".LoadAPIs.lua") then
-                _G.S = true
                 table.insert(files, v.name)
                 selectedFiles[v.name] = 1
             end
@@ -193,18 +190,18 @@ if INSTALL then
             local website = http.get("https://raw.githubusercontent.com/R93950X/ZenUtil/"..selectedBranch.."/"..i)
             if website then 
                 print("Success!")
-                local file = fs.open(installDir.."/"..i,"w")
+                local file = fs.open(fs.combine(installDir,i),"w")
                 file.write(website.readAll():gsub("_BRANCH_",selectedBranch))
                 website.close()
                 file.close()
-                print("Downloaded as "..installDir.."/"..i)
+                print("Downloaded as "..fs.combine(installDir,i))
 
             else
                 print("Connection failed!")
 
             end
-        elseif fs.exists(installDir.."/"..i) and v == 0 then
-            fs.delete(installDir.."/"..i)
+        elseif fs.exists(fs.combine(installDir,i)) and v == 0 then
+            fs.delete(fs.combine(installDir,i))
         end
     end
     sleep(0.5)

@@ -16,7 +16,6 @@ local function argumentCheck(...)
 end
 
 function draw(image,x,y)
-    -- Verify & Format Arguments
     if type(image) ~= "string" and type(image) ~= "table" then
         error("Argument 1 - expected type: string, got "..type(image), 2)
         
@@ -41,7 +40,6 @@ function draw(image,x,y)
         
     end
     
-    -- Function
     local ox, oy = term.getCursorPos()
     local ocolor = term.getBackgroundColor()
     paintutils.drawImage(image, x, y)
@@ -51,22 +49,6 @@ function draw(image,x,y)
 end
 
 function centerImage(image)
-    -- Verify & Format Arguments
-    if type(image) ~= "string" and type(image) ~= "table" then
-        error("Argument 1 - expected type: string, got "..type(image), 2)
-        
-    end
-    if type(image) == "string" then
-        if not fs.find(image) then
-            error("Argument 1 - file not found", 2)
-            
-        end
-        
-        image = paintutils.loadImage(image)
-    end
-    
-    
-    -- Function
     local l, w = term.getSize()
     local imgW = 0
     for i, v in pairs(image) do
@@ -74,7 +56,12 @@ function centerImage(image)
     end
     local x = math.ceil((l-imgW)/2)+1
     local y = math.ceil((w-#image)/2)+1
-    draw(image,x,y)
+
+    local success, err = pcall(sum, image, x, y)
+    if not success then
+        error(err, 2)
+
+    end
     
 end
 

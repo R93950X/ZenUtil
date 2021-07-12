@@ -15,23 +15,32 @@ local function argumentCheck(...)
 
 end
 
-do -- Basic Functions
+do -- General Functions
     function root(x, n)
-        -- Verify & Format Arguments
         argumentCheck(x, "number", root, "number")
-        
-        -- Function
+
         return x ^ (1 / n)
         
     end
 
     function log(x, b)
-        -- Verify & Format Arguments
         argumentCheck(x, "number", b, "number")
 
-        --Function
         return math.log(x)/math.log(b)
 
+    end
+
+    function gcd(x, y)
+        argumentCheck(x, "number", y, "number")
+
+        return y == 0 and x or gcd(y, x % y)
+
+    end
+
+    function lcm(x, y)
+        argumentCheck(x, "number", y, "number")
+
+        return x * y / gcd(x, y)
     end
 
 end
@@ -60,7 +69,6 @@ end
 do -- Statistics Functions
     function sum(...)
         local x = {...}
-        x = type(x[1]) == "table" and x[1] or x
         
         for i, v in pairs(x) do
             if type(v) ~= "number" then
@@ -72,7 +80,7 @@ do -- Statistics Functions
         
         local sum = 0
         for i, v in pairs(x) do
-            sum = sum+v
+            sum = sum + v
         end
         
         return sum
@@ -80,26 +88,19 @@ do -- Statistics Functions
     end
 
     function mean(...)
-        local x = {...}
-        x = type(x[1]) == "table" and x[1] or x
-        
-        for i, v in pairs(x) do
-            if type(v) ~= "number" then
-                error("Argument "..i.." - expected type: number, got "..type(v), 2)
-                
-            end
+        local success, sumVal = pcall(sum, ...)
+        if success then
+            return sumVal/#{...}
             
-        end
+        else
+            error(sumVal, 2)
 
-        local sum = sum(x)
-        
-        return sum/#x
+        end
         
     end
 
     function mode(...)
         local x = {...}
-        x = type(x[1]) == "table" and x[1] or x
         
         for i, v in pairs(x) do
             if type(v) ~= "number" then
@@ -134,7 +135,6 @@ do -- Statistics Functions
 
     function median(...)
         local x = {...}
-        x = type(x[1]) == "table" and x[1] or x
         
         for i, v in pairs(x) do
             if type(v) ~= "number" then
@@ -146,7 +146,7 @@ do -- Statistics Functions
         
         table.sort(x)
         
-        return #x % 2 == 0 and (x[#x/2]+x[#x/2+1])/2 or (x[#x/2+0.5])
+        return #x % 2 == 0 and (x[#x/2] + x[#x/2 + 1])/2 or (x[#x/2 + 0.5])
         
     end
 end
@@ -220,7 +220,7 @@ do -- Trigonometry Functions
 
     function atanh(x)
         argumentCheck(x, "number")
-        return math.log((1+x)/(1-x))/2
+        return math.log((1 + x)/(1 - x))/2
         
     end
 
@@ -245,13 +245,10 @@ end
 
 --[[
 Todo:
-    - GCD
-    - LCM
-    - Moar vectors (higher-d)
-    - Matrices
-    - new RNG
+    - New (better) RNG ?
 
-    - Extensions
-        - Complex Numbers
-        - Ratio type (fraction)
+    - Matrices
+    - Moar vectors (higher-d)
+    - Complex Numbers
+    - Ratio type (fraction)
 ]]

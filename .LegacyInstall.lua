@@ -30,32 +30,23 @@ local function interpretArgs(tInput, tArgs)
 							usedEntries[i+1] = true
 							if aType == "number" then
 								output[aName] = tonumber(tInput[i+1])
-                                
 							else
 								output[aName] = tInput[i+1]
-
 							end
-
 						else
 							output[aName] = nil
 							errors[1] = errors[1] and (errors[1] + 1) or 1
 							errors[aName] = "expected " .. aType .. ", got " .. type(tInput[i+1])
-
 						end
-
 					else
 						usedEntries[i] = true
 						output[aName] = true
-
 					end
-
 				end
-
 			end
-
 		end
-
 	end
+    
 	for i = 1, #tInput do
 		if not usedEntries[i] then
 			output[#output+1] = tInput[i]

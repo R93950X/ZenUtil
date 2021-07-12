@@ -57,21 +57,6 @@ function baseToDecimal(baseNumber, base, digits)
     
 end
 
-function splitString(inputString, partScale)
-    -- Verify & Format Arguments
-    argumentCheck(inputString, "string", partScale, "number")
-    
-    -- Function
-    local outputTable = {}
-    repeat
-        table.insert(outputTable, string.sub(inputString,1,partScale))
-        inputString = string.sub(inputString,partScale+1,-1)
-    until inputString == ""
-    
-    return outputTable
-    
-end
-
 --[[
 Todo:
     None!
