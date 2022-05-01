@@ -1,8 +1,3 @@
-if not ZenUtil.silent then
-    print("ZenText 0.1 By TheZen")
-    
-end
-
 local function argumentCheck(...)
     local Args = {...}
     for i = 2, #Args, 2 do

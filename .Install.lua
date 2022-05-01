@@ -1,5 +1,5 @@
-_G.files = {}
-_G.selectedFiles = {}
+local files = {}
+local selectedFiles = {}
 local branches
 
 local tab = {
@@ -12,7 +12,7 @@ local selectedBranch = "main"
 local installDir = "/ZenUtil"
 local QUIT, INSTALL, files, selectedFiles
 local w, h = term.getSize()
-local modifyMode = 2
+local modifyMode = ZenUtil and 3 or 2
 
 function _G.refreshFiles()
     files = {}
@@ -28,6 +28,16 @@ function _G.refreshFiles()
         end
     else
         error("Connection failed!")
+    end
+    if ZenUtil then
+        for i, v in pairs(selectedFiles) do
+            selectedFiles[i] = 0
+        end
+        for i, v in pairs(ZenUtil.modules) do
+            selectedFiles[v] = 2
+        end
+        selectedBranch = ZenUtil.branch
+        installDir = ZenUtil.installDir
     end
 end
 
@@ -167,21 +177,12 @@ end
 
 refreshFiles()
 refreshBranches()
-if ZenUtil then
-    modifyMode = 3
-    for i, v in pairs(selectedFiles) do
-        selectedFiles[i] = 0
-    end
-    for i, v in pairs(ZenUtil.files) do
-        selectedFiles[v] = 2
-    end
-    selectedBranch = ZenUtil.branch
-    installDir = ZenUtil.installDir
-end
 while not QUIT do
     parallel.waitForAny(tab[selectedTab], tabsBar, banner)
     sleep(1/20)
 end
+
+local installedModules = {}
 
 if INSTALL then
     for i, v in pairs(selectedFiles) do
@@ -200,6 +201,7 @@ if INSTALL then
                 print("Connection failed!")
 
             end
+            table.insert(installedModules, i)
         elseif fs.exists(fs.combine(installDir,i)) and v == 0 then
             fs.delete(fs.combine(installDir,i))
         end
@@ -208,6 +210,11 @@ if INSTALL then
     term.clear()
     term.setCursorPos(1,1)
 end
+
+settings.set("ZenUtil.branch", selectedBranch)
+settings.set("ZenUtil.installDir", installDir)
+settings.set("ZenUtil.modules", installedModules)
+settings.save()
 
 --[[
 Todo:    
