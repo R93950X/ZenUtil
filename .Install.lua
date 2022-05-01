@@ -5,7 +5,7 @@ local branches
 local tab = {
 }
 
-local version = 0.1
+local version = "0.2b"
 
 local selectedTab = "Files"
 local selectedBranch = "main"
@@ -14,14 +14,14 @@ local QUIT, INSTALL, files, selectedFiles
 local w, h = term.getSize()
 local modifyMode = ZenUtil and 3 or 2
 
-function _G.refreshFiles()
+local function refreshFiles()
     files = {}
     selectedFiles = {}
     local handle = http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref="..selectedBranch)
     if handle then
         data = textutils.unserialiseJSON(handle.readAll())
         for i, v in pairs(data) do
-            if not (v.name:sub(1,1) == "." and v.name ~= ".LoadAPIs.lua") then
+            if not (v.name == ".Install") then
                 table.insert(files, v.name)
                 selectedFiles[v.name] = 1
             end
