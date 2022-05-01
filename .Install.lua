@@ -21,7 +21,7 @@ local function refreshFiles()
     if handle then
         data = textutils.unserialiseJSON(handle.readAll())
         for i, v in pairs(data) do
-            if not (v.name == ".Install") then
+            if not (v.name == ".Install.lua" or v.name == ".gitattributes") then
                 table.insert(files, v.name)
                 selectedFiles[v.name] = 1
             end
@@ -149,7 +149,7 @@ local function tabsBar()
         term.setBackgroundColor(colors.gray)
         write("  ")
     end
-    write(string.rep(" ", 51))
+    write(string.rep(" ", w))
     local event, button, x, y
     repeat
         event, button, x, y = coroutine.yield()
