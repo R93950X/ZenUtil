@@ -205,7 +205,7 @@ if INSTALL then
 
         end
         
-        if (v == 1 or v == 2)  then
+        if (v == 1 or (v == 2 and installedModulesOld[i]))  then
             table.insert(installedModules, i)
 
         end
