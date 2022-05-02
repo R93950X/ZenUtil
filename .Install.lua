@@ -19,7 +19,13 @@ local w, h = term.getSize()
 
 local function refreshFiles()
     files = {}
-    local handle = http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref="..selectedBranch)
+    local handle = {http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref="..selectedBranch)}
+    if handle[2] == "Not Found" then
+        selectedBranch = "main"
+        handle = http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref=main")
+    else
+        handle = handle[1]
+    end
     if handle then
         data = textutils.unserialiseJSON(handle.readAll())
         for i, v in pairs(data) do
@@ -77,12 +83,12 @@ local tab = {
     Branches = function()
         term.setCursorPos(1,2)
         for i, v in pairs(branches) do
+            term.setBackgroundColor(colors.lightGray)
             if v == selectedBranch then
                 term.setBackgroundColor(colors.lime)
             end
             write("  "..v)        
             write(string.rep(" ",w).."\n")
-            term.setBackgroundColor(colors.lightGray)
         end
         local event, button, x, y
         repeat
@@ -198,7 +204,7 @@ if INSTALL then
 
         end
         
-        if i ~= ".ZenUtil" and (v == 1 or v == 2)  then
+        if i ~= ".ZenUtil.lua" and (v == 1 or v == 2)  then
             table.insert(installedModules, i)
 
         end
@@ -215,6 +221,5 @@ if INSTALL then
 end
 
 --[[
-Todo:    
-    None!
+Todo:
 ]]
