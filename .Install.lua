@@ -1,4 +1,4 @@
-local version = "0.2b"
+local version = "0.2"
 local selectedTab = "Files"
 local selectedBranch = settings.get("ZenUtil.branch") or "main"
 local installDir = settings.get("ZenUtil.installDir") or "/ZenUtil"
