@@ -32,7 +32,7 @@ local function refreshFiles()
             if not (v.name == ".Install.lua" or v.name == ".gitattributes") then
                 table.insert(files, v.name)
                 if not selectedFiles[v.name] then
-                    selectedFiles[v.name] = 0
+                    selectedFiles[v.name] = modifyMode == 3 and 2 or 0
                 end
             end
         end
@@ -71,6 +71,7 @@ local tab = {
             write("  "..v)
             write(string.rep(" ", w).."\n")
         end
+        term.setTextColor(colors.white)
         local event, button, x, y
         repeat
             event, button, x, y = coroutine.yield()
@@ -204,7 +205,7 @@ if INSTALL then
 
         end
         
-        if i ~= ".ZenUtil.lua" and (v == 1 or v == 2)  then
+        if (v == 1 or v == 2)  then
             table.insert(installedModules, i)
 
         end
