@@ -1,29 +1,33 @@
-_G.files = {}
-_G.selectedFiles = {}
-local branches
-
-local tab = {
-}
-
-local version = 0.1
-
+local version = "0.2"
 local selectedTab = "Files"
-local selectedBranch = "main"
-local installDir = "/ZenUtil"
-local QUIT, INSTALL, files, selectedFiles
-local w, h = term.getSize()
+local selectedBranch = settings.get("ZenUtil.branch") or "main"
+local installDir = settings.get("ZenUtil.installDir") or "/ZenUtil"
+local installDirOld = settings.get("ZenUtil.installDir")
+local files = {}
+local selectedFiles = {}
 local modifyMode = 2
+local installedModulesOld = fs.exists(installDir) and fs.list(installDir)
+if installedModulesOld then
+    for i, v in pairs(settings.get("ZenUtil.modules")) do
+        installedModulesOld[v] = true
+        selectedFiles[v] = 2
+    end
+    modifyMode = 3
+end
+local QUIT, INSTAll, Branches
+local w, h = term.getSize()
 
-function _G.refreshFiles()
+local function refreshFiles()
     files = {}
-    selectedFiles = {}
     local handle = http.get("https://api.github.com/repos/R93950X/ZenUtil/contents?ref="..selectedBranch)
     if handle then
         data = textutils.unserialiseJSON(handle.readAll())
         for i, v in pairs(data) do
-            if not (v.name:sub(1,1) == "." and v.name ~= ".LoadAPIs.lua") then
+            if not (v.name == ".Install.lua" or v.name == ".gitattributes") then
                 table.insert(files, v.name)
-                selectedFiles[v.name] = 1
+                if not selectedFiles[v.name] then
+                    selectedFiles[v.name] = 0
+                end
             end
         end
     else
@@ -48,79 +52,70 @@ local function refreshBranches()
     end
 end
 
-function tab.Files()
-    term.setBackgroundColor(colors.lightGray)
-    term.clear()
-    term.setCursorPos(1,2)
-    for i, v in pairs(files) do
-        if selectedFiles[v] == 0 then
-            term.setBackgroundColor(colors.red)
-        elseif selectedFiles[v] == 1 then
-            term.setBackgroundColor(colors.green)
-        elseif selectedFiles[v] == 2 then
-            term.setBackgroundColor(colors.yellow)
+local fileColors = {
+    [0] = {colors.red, colors.white}, {colors.green, colors.white}, {colors.yellow, colors.black}
+}
+
+local tab = {
+    Files = function()
+        term.setCursorPos(1,2)
+        for i, v in pairs(files) do
+            term.setBackgroundColor(fileColors[selectedFiles[v]][1])
+            term.setTextColor(fileColors[selectedFiles[v]][2])
+            write("  "..v)
+            write(string.rep(" ", w).."\n")
         end
-        write("  "..v)
-        write(string.rep(" ",w).."\n")
-    end
-    local event, button, x, y
-    repeat
-        event, button, x, y = coroutine.yield()
-    until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #files
-    selectedFiles[files[y-1]] = (selectedFiles[files[y-1]]+1)%modifyMode
-end
-
-function tab.Branches()
-    term.setBackgroundColor(colors.lightGray)
-    term.clear()
-    term.setCursorPos(1,2)
-    for i, v in pairs(branches) do
-        if v == selectedBranch then
-            term.setBackgroundColor(colors.lime)
+        local event, button, x, y
+        repeat
+            event, button, x, y = coroutine.yield()
+        until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #files
+        selectedFiles[files[y-1]] = (selectedFiles[files[y-1]]+1)%modifyMode
+        if modifyMode == 3 and not installedModulesOld[files[y-1]] and selectedFiles[files[y-1]] == 0 then
+            selectedFiles[files[y-1]] = 1
         end
-        write("  "..v)        
+    end,
+    Branches = function()
+        term.setCursorPos(1,2)
+        for i, v in pairs(branches) do
+            if v == selectedBranch then
+                term.setBackgroundColor(colors.lime)
+            end
+            write("  "..v)        
+            write(string.rep(" ",w).."\n")
+            term.setBackgroundColor(colors.lightGray)
+        end
+        local event, button, x, y
+        repeat
+            event, button, x, y = coroutine.yield()
+        until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #branches
+        selectedBranch = branches[y-1]
+        sleep(1/20)
+        refreshFiles()
+    end,
+    Settings = function()
+        term.setCursorPos(1,2)
+        write("Install @: "..installDir)        
         write(string.rep(" ",w).."\n")
-        term.setBackgroundColor(colors.lightGray)
+        local event, button, x, y
+        repeat
+            event, button, x, y = coroutine.yield()
+        until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #branches
+        if y == 2 then
+            term.setCursorPos(13,2)
+            term.setBackgroundColor(colors.lightGray)
+            write(string.rep(" ",w))
+            term.setCursorPos(13,2)
+            installDir = "/"..read()
+        end
+    end,
+    Exit = function()
+        QUIT = true
+    end,
+    Install = function()
+        QUIT = true
+        INSTALL = true
     end
-    local event, button, x, y
-    repeat
-        event, button, x, y = coroutine.yield()
-    until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #branches
-    selectedBranch = branches[y-1]
-    sleep(1/20)
-    refreshFiles()
-end
-
-function tab.Settings()
-    term.setBackgroundColor(colors.lightGray)
-    term.clear()
-    term.setCursorPos(1,2)
-    write("Install @: "..installDir)        
-    write(string.rep(" ",w).."\n")
-    local event, button, x, y
-    repeat
-        event, button, x, y = coroutine.yield()
-    until event == "mouse_click" and button == 1 and y > 1 and y <= 1 + #branches
-    if y == 2 then
-        term.setCursorPos(13,2)
-        term.setBackgroundColor(colors.lightGray)
-        write(string.rep(" ",w))
-        term.setCursorPos(13,2)
-        installDir = "/"..read()
-    end
-end
-
-function tab.Exit()
-    QUIT = true
-    term.setBackgroundColor(colors.black)
-    term.clear()
-    term.setCursorPos(1,1)
-end
-
-function tab.Install()
-    tab.Exit()
-    INSTALL = true
-end
+}
 
 local tabOrder = {"Files", "Branches", "Settings", "Install", "Exit"}
 local function tabsBar()
@@ -139,7 +134,7 @@ local function tabsBar()
         term.setBackgroundColor(colors.gray)
         write("  ")
     end
-    write(string.rep(" ", 51))
+    write(string.rep(" ", w))
     local event, button, x, y
     repeat
         event, button, x, y = coroutine.yield()
@@ -155,33 +150,30 @@ local function tabsBar()
     elseif x >= 37 and x <= 40 then
         selectedTab = "Exit"
     end
+    term.setBackgroundColor(colors.lightGray)
+    term.clear()
 end
 
 function banner()
     term.setBackgroundColor(colors.gray)
     term.setCursorPos(1,h)
-    write("ZenUtil Version "..(selectedBranch == "main" and version or (" "..selectedBranch) or "").." Installer")
+    write("ZenUtil Version "..(selectedBranch == "main" and version or (version.." "..selectedBranch)).." Installer")
     write(string.rep(" ",w))
     sleep(10^6)
 end
 
 refreshFiles()
 refreshBranches()
-if ZenUtil then
-    modifyMode = 3
-    for i, v in pairs(selectedFiles) do
-        selectedFiles[i] = 0
-    end
-    for i, v in pairs(ZenUtil.files) do
-        selectedFiles[v] = 2
-    end
-    selectedBranch = ZenUtil.branch
-    installDir = ZenUtil.installDir
-end
+term.setBackgroundColor(colors.lightGray)
+term.clear()
 while not QUIT do
     parallel.waitForAny(tab[selectedTab], tabsBar, banner)
-    sleep(1/20)
 end
+term.setBackgroundColor(colors.black)
+term.clear()
+term.setCursorPos(1,1)
+
+local installedModules = {}
 
 if INSTALL then
     for i, v in pairs(selectedFiles) do
@@ -200,10 +192,23 @@ if INSTALL then
                 print("Connection failed!")
 
             end
-        elseif fs.exists(fs.combine(installDir,i)) and v == 0 then
-            fs.delete(fs.combine(installDir,i))
+
+        elseif modifyMode == 3 and v == 0 then
+            fs.delete(fs.combine(installDirOld, i))
+
+        end
+        
+        if i ~= ".ZenUtil" and (v == 1 or v == 2)  then
+            table.insert(installedModules, i)
+
         end
     end
+
+    settings.set("ZenUtil.branch", selectedBranch)
+    settings.set("ZenUtil.installDir", installDir)
+    settings.set("ZenUtil.modules", installedModules)
+    settings.save()
+
     sleep(0.5)
     term.clear()
     term.setCursorPos(1,1)
