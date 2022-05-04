@@ -16,7 +16,7 @@ return {
         return baseNumber
     end,
     baseToDecimal = function(baseNumber, base, digits)
-        expect(1, baseNumber, "number")
+        expect(1, baseNumber, "number", "string")
         expect(2, base, "number")
         expect(3, digits, "table", "nil")
         digits = digits or {table.unpack(digitsDefault)}
@@ -25,8 +25,8 @@ return {
         end
         
         local decimalNumber = 0
-        for i = 1, #baseNumber do
-            decimalNumber = decimalNumber + digits[string.sub(baseNumber, i, i)] * base ^ (#baseNumber - i)
+        for i = 1, string.len(baseNumber) do
+            decimalNumber = decimalNumber + digits[string.sub(baseNumber, i, i)] * base ^ (string.len(baseNumber) - i)
             
         end
         return decimalNumber

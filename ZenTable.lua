@@ -1,4 +1,17 @@
 local expect = require "cc.expect"
+local deepCopy
+deepCopy = function(tbl)
+    expect(1, tbl, "table")
+    local clone = {}
+    for k, v in pairs(tbl) do
+        if type(v) == "table" then
+            clone[k] = deepCopy(v)
+        else
+            clone[k] = v
+        end
+    end
+    return clone
+end
 return {
     shuffle = function(tbl)
         expect(1, tbl, "table")
@@ -17,18 +30,7 @@ return {
             pos2 = pos2 - 1
         end
     end,
-    deepCopy = function(tbl)
-        expect(1, tbl, "table")
-        local clone = {}
-        for k, v in ipairs(tbl) do
-            if type(v) == "table" then
-                clone[k] = deepCopy(v)
-            else
-                clone[k] = v
-            end
-        end
-        return clone
-    end
+    deepCopy = deepCopy
 }
 --[[
 Todo:
